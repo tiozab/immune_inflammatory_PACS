@@ -1,0 +1,89 @@
+INFO  [2023-05-26 18:30:15] INSTANTIATING INITIAL COHORTS
+INFO  [2023-05-26 18:30:23] - getting initial cohort definitions
+INFO  [2023-05-26 18:30:23] - getting initial cohorts
+INFO  [2023-05-26 18:31:23] INSTANTIATING INITIAL COHORTS
+INFO  [2023-05-26 18:31:24] - getting initial cohort definitions
+INFO  [2023-05-26 18:31:24] - getting initial cohorts
+INFO  [2023-05-26 23:55:14] - got initial cohorts
+INFO  [2023-05-26 23:55:14] GOT INITIAL COHORTS
+INFO  [2023-05-26 23:55:14] GETTING STUDY COHORTS
+INFO  [2023-05-26 23:55:38] -- Getting base cohorts
+INFO  [2023-05-27 00:29:49] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 00:29:53] INITIAL COHORTS READ
+INFO  [2023-05-27 00:29:53] GETTING STUDY COHORTS
+INFO  [2023-05-27 00:30:14] -- Getting base cohorts
+INFO  [2023-05-27 09:12:13] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 09:12:15] INITIAL COHORTS READ
+INFO  [2023-05-27 09:12:15] GETTING STUDY COHORTS
+INFO  [2023-05-27 09:12:37] -- Getting base cohorts
+INFO  [2023-05-27 09:59:15] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 09:59:16] INITIAL COHORTS READ
+INFO  [2023-05-27 09:59:16] GETTING STUDY COHORTS
+INFO  [2023-05-27 09:59:35] -- Getting base cohorts
+INFO  [2023-05-27 11:05:36] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 11:05:37] INITIAL COHORTS READ
+INFO  [2023-05-27 11:05:37] GETTING STUDY COHORTS
+INFO  [2023-05-27 11:05:56] -- Getting base cohorts
+INFO  [2023-05-27 13:01:05] -- Getting outcome cohorts
+INFO  [2023-05-27 14:37:55] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 14:37:56] INITIAL COHORTS READ
+INFO  [2023-05-27 14:37:56] GETTING STUDY COHORTS
+INFO  [2023-05-27 14:38:16] -- Getting base cohorts
+INFO  [2023-05-27 18:39:28] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 18:39:29] INITIAL COHORTS READ
+INFO  [2023-05-27 18:39:29] GETTING STUDY COHORTS
+INFO  [2023-05-27 18:39:49] -- Getting base cohorts
+INFO  [2023-05-27 19:59:32] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 19:59:33] INITIAL COHORTS READ
+INFO  [2023-05-27 19:59:33] GETTING STUDY COHORTS
+INFO  [2023-05-27 19:59:53] -- Getting base cohorts
+INFO  [2023-05-27 20:02:59] -- Getting outcome cohorts
+INFO  [2023-05-27 22:37:20] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-27 22:37:21] INITIAL COHORTS READ
+INFO  [2023-05-27 22:37:21] GETTING STUDY COHORTS
+INFO  [2023-05-27 22:37:40] -- Getting base cohorts
+INFO  [2023-05-27 22:40:48] -- Getting outcome cohorts
+INFO  [2023-05-28 23:07:59] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-05-28 23:08:01] INITIAL COHORTS READ
+INFO  [2023-05-28 23:08:01] GETTING STUDY COHORTS
+INFO  [2023-05-28 23:08:25] -- Getting base cohorts
+INFO  [2023-05-28 23:11:29] -- Getting outcome cohorts
+INFO  [2023-05-29 09:18:31] -- Getting cohort counts
+INFO  [2023-05-29 09:24:05] -- Calculating incidence and prevalence for outcomes in base cohorts
+INFO  [2023-05-29 09:24:06] -- Calculating incidence and prevalence for outcomes and base cohorts in source population
+INFO  [2023-05-29 09:24:07] --- Long Covid only symptoms on general population done
+INFO  [2023-05-29 09:26:03] -- Calculating incidence and prevalence for outcomes in base cohorts
+INFO  [2023-05-29 18:44:28] -- Calculating incidence and prevalence for outcomes and base cohorts in source population
+INFO  [2023-05-29 18:44:29] --- Long Covid only symptoms on general population done
+INFO  [2023-05-30 06:54:30] -- Getting overlap inf cohorts
+INFO  [2023-05-30 06:54:31] --- Getting overlap lc cohorts
+INFO  [2023-05-30 07:15:35] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 07:16:23] --- Getting overlap mc cohorts
+INFO  [2023-05-30 07:30:46] --- Getting overlap lc cohorts
+INFO  [2023-05-30 07:37:00] --- Getting overlap lc cohorts
+INFO  [2023-05-30 07:58:19] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 07:59:06] --- Getting overlap mc cohorts
+INFO  [2023-05-30 07:59:59] -- Getting overlap reinf cohorts
+INFO  [2023-05-30 07:59:59] --- Getting overlap lc cohorts
+INFO  [2023-05-30 08:20:55] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 08:21:36] --- Getting overlap mc cohorts
+INFO  [2023-05-30 08:22:19] -- Getting overlap testneg cohorts
+INFO  [2023-05-30 08:22:19] --- Getting overlap lc cohorts
+INFO  [2023-05-30 08:31:26] --- Getting overlap lc cohorts
+INFO  [2023-05-30 08:53:04] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 08:53:52] --- Getting overlap mc cohorts
+INFO  [2023-05-30 09:02:24] -- Getting overlap reinf cohorts
+INFO  [2023-05-30 09:02:25] --- Getting overlap lc cohorts
+INFO  [2023-05-30 09:23:14] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 09:23:55] --- Getting overlap mc cohorts
+INFO  [2023-05-30 09:25:23] -- Getting overlap testneg cohorts
+INFO  [2023-05-30 09:25:23] --- Getting overlap lc cohorts
+INFO  [2023-05-30 09:39:15] --- Getting overlap pasc cohorts
+INFO  [2023-05-30 09:39:51] --- Getting overlap mc cohorts
+INFO  [2023-05-30 10:25:56] -- Getting cohort counts
+INFO  [2023-05-30 10:27:49] -- Getting cohort counts
+INFO  [2023-05-30 10:29:08] Calculating IP for inf
+INFO  [2023-05-30 10:30:05] -- Calculating incidence and prevalence for outcomes and base cohorts in source population
+INFO  [2023-05-30 10:43:13] Calculating IP for inf
+INFO  [2023-05-30 11:38:50] -- Calculating incidence and prevalence for outcomes and base cohorts in source population
+INFO  [2023-05-31 10:49:48] -- Calculating incidence and prevalence for outcomes and base cohorts in source population

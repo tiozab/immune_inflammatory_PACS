@@ -1,0 +1,58 @@
+INFO  [2023-07-14 15:55:36] INITIAL COHORTS ALREADY INSTANTIATED
+INFO  [2023-07-14 15:55:37] INITIAL COHORTS READ
+INFO  [2023-07-14 15:55:39] -- Calculating incidence and prevalence for outcomes in base cohorts
+INFO  [2023-07-14 15:56:21] INSTANTIATING INITIAL COHORTS
+INFO  [2023-07-14 15:56:22] - getting initial cohort definitions
+INFO  [2023-07-14 15:56:22] - getting initial cohorts
+INFO  [2023-07-14 16:02:14] - got initial cohorts
+INFO  [2023-07-14 16:02:14] GOT INITIAL COHORTS
+INFO  [2023-07-14 16:02:14] GETTING STUDY COHORTS
+INFO  [2023-07-14 16:02:14] -- Getting base cohorts
+INFO  [2023-07-14 16:02:40] -- Getting outcome cohorts
+INFO  [2023-07-14 16:03:09] -- Getting overlap inf cohorts
+INFO  [2023-07-14 16:03:09] --- Getting overlap lc cohorts
+INFO  [2023-07-14 16:03:50] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 16:04:06] --- Getting overlap mc cohorts
+INFO  [2023-07-14 16:04:19] -- Getting overlap reinf cohorts
+INFO  [2023-07-14 16:04:19] --- Getting overlap lc cohorts
+INFO  [2023-07-14 16:05:00] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 16:05:15] --- Getting overlap mc cohorts
+INFO  [2023-07-14 16:05:28] -- Getting overlap testneg cohorts
+INFO  [2023-07-14 16:05:28] --- Getting overlap lc cohorts
+INFO  [2023-07-14 16:06:10] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 16:06:26] --- Getting overlap mc cohorts
+INFO  [2023-07-14 16:06:42] -- Getting cohort counts
+INFO  [2023-07-14 16:06:43] GOT STUDY COHORTS
+INFO  [2023-07-14 16:06:45] -- Calculating incidence and prevalence for outcomes in base cohorts
+INFO  [2023-07-14 16:06:45] Calculating IP for inf
+INFO  [2023-07-14 16:50:51] INSTANTIATING INITIAL COHORTS
+INFO  [2023-07-14 16:50:52] - getting initial cohort definitions
+INFO  [2023-07-14 16:50:52] - getting initial cohorts
+INFO  [2023-07-14 16:56:19] - got initial cohorts
+INFO  [2023-07-14 16:56:19] GOT INITIAL COHORTS
+INFO  [2023-07-14 16:56:19] GETTING STUDY COHORTS
+INFO  [2023-07-14 16:56:20] -- Getting base cohorts
+INFO  [2023-07-14 16:56:46] -- Getting outcome cohorts
+INFO  [2023-07-14 16:57:17] -- Getting overlap inf cohorts
+INFO  [2023-07-14 16:57:17] --- Getting overlap lc cohorts
+INFO  [2023-07-14 16:58:01] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 16:58:17] --- Getting overlap mc cohorts
+INFO  [2023-07-14 16:58:31] -- Getting overlap reinf cohorts
+INFO  [2023-07-14 16:58:31] --- Getting overlap lc cohorts
+INFO  [2023-07-14 16:59:13] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 16:59:28] --- Getting overlap mc cohorts
+INFO  [2023-07-14 16:59:42] -- Getting overlap testneg cohorts
+INFO  [2023-07-14 16:59:42] --- Getting overlap lc cohorts
+INFO  [2023-07-14 17:00:27] --- Getting overlap pasc cohorts
+INFO  [2023-07-14 17:00:43] --- Getting overlap mc cohorts
+INFO  [2023-07-14 17:01:00] -- Getting cohort counts
+INFO  [2023-07-14 17:01:01] GOT STUDY COHORTS
+INFO  [2023-07-14 17:01:03] -- Calculating incidence and prevalence for outcomes in base cohorts
+INFO  [2023-07-14 17:01:03] Calculating IP for inf
+INFO  [2023-07-14 17:14:04] Calculating IP for reinf
+INFO  [2023-07-14 17:24:55] Calculating IP for testneg
+INFO  [2023-07-14 17:38:18] -- Calculating incidence and prevalence for outcomes and base cohorts in source population, sex strata
+INFO  [2023-07-14 18:08:58] -- Calculating incidence and prevalence for outcomes and base cohorts in source population, age strata
+INFO  [2023-07-14 18:53:02] -- Getting information of base cohorts for Table One
+INFO  [2023-07-14 18:53:19] GOT INCIDENCE AND PREVALENCE
+INFO  [2023-07-14 18:53:19] SAVED RESULTS IN THE OUTPUT FOLDER
