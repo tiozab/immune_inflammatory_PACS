@@ -110,7 +110,8 @@ all_table_one <- rbind(table_one_put("CPRDGold"),
                        table_one_put("eDOL_CHUM"),
                        table_one_put("IMASIS"),
                        table_one_put("AUSOM"),
-                       table_one_put("Pharmetrics")
+                       table_one_put("Pharmetrics"),
+                       table_one_put("CORIVA")
                        )
 
 write.csv(all_table_one,here::here("plots_and_tables", "table1.csv"))

@@ -158,7 +158,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                          align = "w")
   
 
-pdf("supp_cprd_gold.pdf",         # File name
+pdf("supp_Pharmetrics.pdf",         # File name
     width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
