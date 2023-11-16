@@ -1,16 +1,16 @@
 ## read in the results files
 
 source(here::here("R","read_in.R"))
-CPRDGOLD <- read_in(database_results_name = "Pharmetrics")
+CORIVA <- read_in(database_results_name = "CORIVA")
 
 #load outcome names
 names_conditions <- read_csv(here::here("names_conditions.csv"))
 
   # general population
-  incidence_estimates_general_help <- CPRDGOLD[[1]]
+  incidence_estimates_general_help <- CORIVA[[1]]
   
   # specific populations
-  incidence_estimates_help <- CPRDGOLD[[2]]
+  incidence_estimates_help <- CORIVA[[2]]
   
   
   source(here::here("R","IRR function.R"))
@@ -18,7 +18,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","sle","juvenile_arthritis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -32,7 +32,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                            "ME/CFS","Dysautonomia","POTS"))) 
   
   female_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","mis","sle","juvenile_arthritis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -47,7 +47,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   male_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("me_cfs","t1dm","juvenile_arthritis","sle","mis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -62,7 +62,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   children_temp_inf_testneg <-
-    map_df( setdiff( names_conditions$cohort_name, c("ra","juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","ra","me_cfs","ibd","mis","sle","juvenile_arthritis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  c("0 to 6","7 to 11","12 to 18"),
@@ -77,7 +77,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   adult_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","juvenile_arthritis","sle","mis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  c("19 to 40","41 to 64"),
@@ -91,7 +91,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                            "ME/CFS","Dysautonomia","POTS"))) 
   
   elderly_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis","me_cfs","t1dm")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","me_cfs","ibd","juvenile_arthritis","sle","mis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "65 to 150",
@@ -158,7 +158,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                          align = "w")
   
 
-pdf("supp_Pharmetrics.pdf",         # File name
+pdf("supp_CORIVA.pdf",         # File name
     width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
