@@ -29,7 +29,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   female_temp_inf_testneg <- 
     map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis","me_cfs","ra")) %>% set_names,
@@ -43,7 +43,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
   male_temp_inf_testneg <- 
@@ -58,7 +58,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
   adult_temp_inf_testneg <- 
@@ -73,7 +73,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
   elderly_temp_inf_testneg <- 
@@ -88,7 +88,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
                                Female = female_temp_inf_testneg,

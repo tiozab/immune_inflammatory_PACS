@@ -7,7 +7,7 @@ source(here::here("R","IRR function.R"))
 ## infection over test_negative ------------------------------------------------------
 
 overall_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("mis","sle","juvenile_arthritis")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "0 to 150",
@@ -18,7 +18,7 @@ overall_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                                        labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                                  "ME/CFS","Dysautonomia","POTS"))) 
+                                                  "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 female_temp_inf_testneg <- 
   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
@@ -32,7 +32,7 @@ female_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS","Dysautonomia","POTS"))) 
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
 male_temp_inf_testneg <- 
@@ -47,7 +47,7 @@ male_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS","Dysautonomia","POTS"))) 
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
 children_temp_inf_testneg <-
@@ -62,7 +62,7 @@ children_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS","Dysautonomia","POTS"))) 
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
 adult_temp_inf_testneg <- 
@@ -77,11 +77,11 @@ adult_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS","Dysautonomia","POTS"))) 
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
 elderly_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","me_cfs","sle","t1dm","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("t1dm","me_cfs","juvenile_arthritis","sle","mis")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "65 to 150",
@@ -92,7 +92,7 @@ elderly_temp_inf_testneg <-
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS","Dysautonomia","POTS"))) 
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
                              Female = female_temp_inf_testneg,
@@ -231,9 +231,9 @@ dev.off()
 #           .id = "conditions") %>% 
 #   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE),
 #         outcome_cohort_name = factor(outcome_cohort_name,
-#                                      levels = c("dysautonomia",
+#                                      levels = c("POTS symptoms",
 #                                                 "me_cfs_symptoms",
-#                                                 "pots", 
+#                                                 "POTS diagnosis", 
 #                                                 "me_cfs",
 #                                                 "ra",
 #                                                 "ibd",
@@ -241,9 +241,9 @@ dev.off()
 #                                                 "sle",
 #                                                 "juvenile_arthritis",
 #                                                 "mis"),
-#                                      labels = c("Dysautonomia",
+#                                      labels = c("POTS symptoms",
 #                                                 "ME/CFS symptoms",
-#                                                 "POTS",
+#                                                 "POTS diagnosis",
 #                                                 "ME/CFS",
 #                                                 "RA",
 #                                                 "IBD",

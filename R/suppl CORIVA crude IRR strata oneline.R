@@ -29,7 +29,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   female_temp_inf_testneg <- 
     map_df( setdiff( names_conditions$cohort_name, c("t1dm","mis","sle","juvenile_arthritis")) %>% set_names,
@@ -43,7 +43,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
   male_temp_inf_testneg <- 
@@ -58,7 +58,8 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
   
   
   children_temp_inf_testneg <-
@@ -73,7 +74,8 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
   
   
   adult_temp_inf_testneg <- 
@@ -88,7 +90,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   elderly_temp_inf_testneg <- 
     map_df( setdiff( names_conditions$cohort_name, c("t1dm","me_cfs","ibd","juvenile_arthritis","sle","mis")) %>% set_names,
@@ -102,7 +104,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS","Dysautonomia","POTS"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
                                Female = female_temp_inf_testneg,
@@ -119,7 +121,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
       geom_point( size = 1.2, position = position_dodge(0.2)) +
       geom_errorbar( aes( xmin = IRR_low_random, xmax = IRR_upper_random), position = position_dodge(0.75), width = 0.3) +
       geom_vline( xintercept = 1) +
-      scale_x_continuous(  limits = c(0.2, 5), trans = scales::log2_trans()) +
+      scale_x_continuous(  limits = c(0.2, 10), trans = scales::log2_trans()) +
       guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
       ggsci::scale_color_lancet( alpha = 0.5) +
       labs( x = "", y = "", fill = "IRR") +
