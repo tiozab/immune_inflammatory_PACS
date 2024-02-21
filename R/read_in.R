@@ -29,7 +29,7 @@ Allpop_MC_AllandSex <- read_csv(paste0(wd,data_path, "Allpop_MC_AllandSex.csv"))
 Inf_Age <- read_csv(paste0(wd,data_path, "Inf_Age.csv"))
 Inf_AllandSex <- read_csv(paste0(wd,data_path, "Inf_AllandSex.csv"))
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 
 Testneg_Age <- read_csv(paste0(wd,data_path, "Testneg_Age.csv"))
 Testneg_AllandSex <- read_csv(paste0(wd,data_path, "Testneg_AllandSex.csv"))
@@ -49,7 +49,7 @@ unique(Allpop_MC_AllandSex$outcome_cohort_name)
 unique(Inf_Age$outcome_cohort_name)
 unique(Inf_AllandSex$outcome_cohort_name)
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 unique(Testneg_Age$outcome_cohort_name)
 unique(Testneg_AllandSex$outcome_cohort_name)
 }
@@ -71,7 +71,7 @@ unique(Allpop_MC_AllandSex$denominator_age_group)
 unique(Inf_Age$denominator_age_group)
 unique(Inf_AllandSex$denominator_age_group) 
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 unique(Testneg_Age$denominator_age_group)
 unique(Testneg_AllandSex$denominator_age_group)
 }
@@ -89,7 +89,7 @@ unique(Allpop_MC_AllandSex$denominator_sex)
 unique(Inf_Age$denominator_sex)
 unique(Inf_AllandSex$denominator_sex)
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 unique(Testneg_Age$denominator_sex)
 unique(Testneg_AllandSex$denominator_sex)
 }
@@ -108,7 +108,7 @@ unique(Allpop_MC_AllandSex$analysis_interval)
 unique(Inf_Age$analysis_interval)
 unique(Inf_AllandSex$analysis_interval)
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 unique(Testneg_Age$analysis_interval)
 unique(Testneg_AllandSex$analysis_interval)
 }
@@ -130,7 +130,7 @@ Inf_AllandSex <- Inf_AllandSex %>%
   mutate(
     outcome_cohort_name = gsub("^.*?_","",outcome_cohort_name))
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 Testneg_Age <- Testneg_Age %>% 
   mutate(
     outcome_cohort_name = gsub("^.*?_","",outcome_cohort_name))
@@ -152,20 +152,48 @@ Reinf_AllandSex <- Reinf_AllandSex %>%
 }
 
 #put them together
-incidence_estimates_general_help <- rbind(Allpop_MC_Age,Allpop_MC_AllandSex)
+incidence_estimates_general_help <- rbind(Allpop_MC_Age,Allpop_MC_AllandSex) 
 
-if (database_results_name == "Pharmetrics") {
+
+if (database_results_name == "Pharmetrics" | database_results_name == "University_of_Oslo") {
 
 incidence_estimates_help <- rbind(Inf_Age,Inf_AllandSex,
-                                  Reinf_Age,Reinf_AllandSex)
+                                  Reinf_Age,Reinf_AllandSex) 
 
 } else if (database_results_name == "AUSOM") {
   incidence_estimates_help <- rbind(Inf_Age,Inf_AllandSex,
-                                    Testneg_Age,Testneg_AllandSex)
+                                    Testneg_Age,Testneg_AllandSex) 
+  
 } else {
   incidence_estimates_help <- rbind(Inf_Age,Inf_AllandSex,
                                     Testneg_Age,Testneg_AllandSex,
-                                    Reinf_Age,Reinf_AllandSex)
+                                    Reinf_Age,Reinf_AllandSex) 
+}
+
+#### deal with NAs in CPRD Aurum, UiO (1-4) and the rest (0-5)
+
+if (database_results_name == "CPRDAurum" | database_results_name == "University_of_Oslo") {
+
+incidence_estimates_general_help <- incidence_estimates_general_help %>%
+  mutate(n_events = ifelse(is.na(n_events),sample(4,1),n_events))
+
+} else {
+
+  incidence_estimates_general_help <- incidence_estimates_general_help %>%
+    mutate(n_events = ifelse(is.na(n_events),runif(1, min = 0, max = 4),n_events))
+  
+}
+  
+if (database_results_name == "CPRDAurum" | database_results_name == "University_of_Oslo") {
+    
+  incidence_estimates_help <- incidence_estimates_help %>%
+    mutate(n_events = ifelse(is.na(n_events),sample(4,1),n_events))
+  
+} else {
+  
+  incidence_estimates_help <- incidence_estimates_help %>%
+    mutate(n_events = ifelse(is.na(n_events),runif(1, min = 0, max = 4),n_events))
+  
 }
 
 
@@ -186,26 +214,14 @@ incidence_estimates_general_help <-
          year_month = paste(year_index, sprintf("%02d", month_index), sep = "-"),
          database_name = database_results_name)
 
-# incidence_estimates_general_help_quarters <- 
-#   incidence_estimates_general_help %>%  
-#   filter(analysis_interval == "months") %>%
-#   mutate(quarter = ifelse(year_month %in% c("2020-12","2021-01","2021-02","2021-03"),"2021.1",
-#                           ifelse(year_month %in% c("2021-04","2021-05","2021-06"),"2021.2",
-#                                  ifelse(year_month %in% c("2021-07","2021-08","2021-09"),"2021.3",
-#                                         ifelse(year_month %in% c("2021-10","2021-11","2021-12"),"2021.4",
-#                                                ifelse(year_month %in% c("2022-01","2022-02","2022-03"),"2022.1",
-#                                                       ifelse(year_month %in% c("2022-04","2022-05","2022-06"),"2022.2",
-#                                                              ifelse(year_month %in% c("2022-07","2022-08","2022-09"),"2022.3",
-#                                                                     ifelse(year_month %in% c("2022-10","2022-11","2022-12"),"2022.4",
-#                                                                            ifelse(year_month %in% c("2023-01","2023-02","2023-03"),"2023.1",
-#                                                                                   ifelse(year_month %in% c("2023-04","2023-05","2023-06"),"2023.2",
-#                                                                                          ifelse(year_month %in% c("2023-07","2023-08","2023-09"),"2023.3",NA)))))))))))
-#   ) %>%
-#   filter(!is.na(quarter))
 
+if (database_results_name == "CPRDAurum" | database_results_name == "University_of_Oslo"){
+  incidence_estimates_help <- 
+    incidence_estimates_help %>% rename(
+      denominator_strata_cohort_name = denominator_target_cohort_name
+    )
   
-
-# infection and test negative and reinfection cohorts
+}
 
 incidence_estimates_help <- 
   incidence_estimates_help %>%  
@@ -221,28 +237,8 @@ incidence_estimates_help <-
          database_name = database_results_name)
 
 
-# incidence_estimates_help_quarters <- 
-#   incidence_estimates_help %>%  
-#   filter(analysis_interval == "months") %>%
-#   mutate(quarter = ifelse(year_month %in% c("2020-12","2021-01","2021-02","2021-03"),"2021.1",
-#                           ifelse(year_month %in% c("2021-04","2021-05","2021-06"),"2021.2",
-#                                  ifelse(year_month %in% c("2021-07","2021-08","2021-09"),"2021.3",
-#                                         ifelse(year_month %in% c("2021-10","2021-11","2021-12"),"2021.4",
-#                                                ifelse(year_month %in% c("2022-01","2022-02","2022-03"),"2022.1",
-#                                                       ifelse(year_month %in% c("2022-04","2022-05","2022-06"),"2022.2",
-#                                                              ifelse(year_month %in% c("2022-07","2022-08","2022-09"),"2022.3",
-#                                                                     ifelse(year_month %in% c("2022-10","2022-11","2022-12"),"2022.4",
-#                                                                            ifelse(year_month %in% c("2023-01","2023-02","2023-03"),"2023.1",
-#                                                                                   ifelse(year_month %in% c("2023-04","2023-05","2023-06"),"2023.2",
-#                                                                                          ifelse(year_month %in% c("2023-07","2023-08","2023-09"),"2023.3",NA)))))))))))
-#   ) %>%
-#   filter(!is.na(quarter))
-
-
 return(list(incidence_estimates_general_help,
             incidence_estimates_help
             ))
 
 }
-
-

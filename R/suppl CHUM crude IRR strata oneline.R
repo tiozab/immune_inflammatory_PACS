@@ -1,14 +1,4 @@
-## read in the results files
 
-source(here::here("R","read_in.R"))
-eDOL_CHUM <- read_in(database_results_name = "eDOL_CHUM")
-
-#load outcome names
-names_conditions <- read_csv(here::here("names_conditions.csv"))
-
-  # general population
-  incidence_estimates_general_help <- eDOL_CHUM[[1]]
-  
   # specific populations
   incidence_estimates_help <- eDOL_CHUM[[2]]
   
@@ -18,7 +8,8 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","me_cfs","me_cfs_symptoms","ra","sle","t1dm","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+                                                     "sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -31,9 +22,10 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
-
+  
   male_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","me_cfs","me_cfs_symptoms","ra","sle","t1dm","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+                                                     "sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -44,12 +36,58 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis")))   
 
- 
-  
+  # female_temp_inf_testneg <- 
+  #   map_df( setdiff( names_conditions$cohort_name, c("dysautonomia","pots","mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+  #                                                    "sle")) %>% set_names,
+  #           cohort_wrap_func,
+  #           interval = "overall",
+  #           age_expre =  "0 to 150",
+  #           sex_expre = "Female",
+  #           numerator = "infection",
+  #           denominator = "test_negative",
+  #           .id = "conditions") %>% 
+  #   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+  #                                                     "me_cfs","dysautonomia","pots"),
+  #                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+  #                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  # 
+  # 
+
+    # adult_temp_inf_testneg <-
+    # map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+    #                                                  "sle","dysautonomia","pots")) %>% set_names,
+    #         cohort_wrap_func,
+    #         interval = "overall",
+    #         age_expre =  c("19 to 40","41 to 64"),
+    #         sex_expre = "Both",
+    #         numerator = "infection",
+    #         denominator = "test_negative",
+    #         .id = "conditions") %>%
+    # mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+    #                                                   "me_cfs","dysautonomia","pots"),
+    #                             labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+    #                                        "ME/CFS diagnosis","POTS symptoms","POTS diagnosis")))
+
+  # children_temp_inf_testneg <- 
+  #   map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+  #                                                    "sle","dysautonomia","pots")) %>% set_names,
+  #           cohort_wrap_func,
+  #           interval = "overall",
+  #           age_expre =  c("0 to 6","7 to 11","12 to 18"),
+  #           sex_expre = "Both",
+  #           numerator = "infection",
+  #           denominator = "test_negative",
+  #           .id = "conditions") %>% 
+  #   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+  #                                                     "me_cfs","dysautonomia","pots"),
+  #                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+  #                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  # 
   elderly_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","me_cfs","me_cfs_symptoms","ra","sle","t1dm","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ra","me_cfs_symptoms","me_cfs","ibd","juvenile_arthritis",
+                                                     "sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "65 to 150",
@@ -69,6 +107,11 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                elderly = elderly_temp_inf_testneg)
   
   
+  # Specify the Excel file path
+  excel_file <- "all_IRR_inf_testneg_CHUM.xlsx"
+  
+  # Write the list of tibbles to different sheets in Excel
+  write_xlsx(all_IRR_inf_testneg, excel_file)  
   
   plot_func <- function( df){
     
@@ -104,7 +147,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                          plot_list$Male + theme( legend.position = "none"), 
                       
                          plot_list$elderly + theme( legend.position = "none"), 
-                         nrow = 3, ncol = 1,
+                         nrow = 1, ncol = 3,
                          labels = c("All",  
                                     "Male",  
                                     "Elderly"), label_size = 8, label_y = 1.0,
@@ -112,7 +155,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
 
 pdf("supp_chum.pdf",         # File name
-    width = 3, height = 6, # Width and height in inches
+    width = 9, height = 3, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
 

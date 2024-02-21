@@ -1,5 +1,6 @@
+
   # specific populations
-  incidence_estimates_help <- IPCI[[2]]
+  incidence_estimates_help <- CPRDAurum[[2]]
   
   
   source(here::here("R","IRR function.R"))
@@ -7,10 +8,69 @@
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","sle","ra","me_cfs","juvenile_arthritis","ibd","pots")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","juvenile_arthritis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
+            sex_expre = "Both",
+            numerator = "infection",
+            denominator = "test_negative",
+            .id = "conditions")   %>% 
+    mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+                                                      "me_cfs","dysautonomia","pots"),
+                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
+  female_temp_inf_testneg <- 
+    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
+            cohort_wrap_func,
+            interval = "overall",
+            age_expre =  "0 to 150",
+            sex_expre = "Female",
+            numerator = "infection",
+            denominator = "test_negative",
+            .id = "conditions")  %>% 
+    mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+                                                      "me_cfs","dysautonomia","pots"),
+                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
+  
+  male_temp_inf_testneg <- 
+    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+            cohort_wrap_func,
+            interval = "overall",
+            age_expre =  "0 to 150",
+            sex_expre = "Male",
+            numerator = "infection",
+            denominator = "test_negative",
+            .id = "conditions")  %>% 
+    mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+                                                      "me_cfs","dysautonomia","pots"),
+                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
+  ## have to take out RA and SLE because of low counts
+  children_temp_inf_testneg <-
+    map_df( setdiff( names_conditions$cohort_name, c("sle","ra","juvenile_arthritis","mis")) %>% set_names,
+            cohort_wrap_func,
+            interval = "overall",
+            age_expre =  c("0 to 6","7 to 11","12 to 18"),
+            sex_expre = "Both",
+            numerator = "infection",
+            denominator = "test_negative",
+            .id = "conditions") %>% 
+    mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
+                                                      "me_cfs","dysautonomia","pots"),
+                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+  
+  
+  adult_temp_inf_testneg <- 
+    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
+            cohort_wrap_func,
+            interval = "overall",
+            age_expre =  c("19 to 40","41 to 64"),
             sex_expre = "Both",
             numerator = "infection",
             denominator = "test_negative",
@@ -20,89 +80,30 @@
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
-  female_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","sle","ra","me_cfs","juvenile_arthritis","ibd","pots")) %>% set_names,
-            cohort_wrap_func,
-            interval = "overall",
-            age_expre =  "0 to 150",
-            sex_expre = "Female",
-            numerator = "infection",
-            denominator = "test_negative",
-            .id = "conditions") %>% 
-    mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
-                                                      "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                           "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
-  
-  # male_temp_inf_testneg <- 
-  #   map_df( setdiff( names_conditions$cohort_name, c("me_cfs_symptoms","dysautonomia","mis","t1dm","sle","ra","me_cfs",
-  #                                                    "juvenile_arthritis","ibd","pots")) %>% set_names,
-  #           cohort_wrap_func,
-  #           interval = "overall",
-  #           age_expre =  "0 to 150",
-  #           sex_expre = "Male",
-  #           numerator = "infection",
-  #           denominator = "test_negative",
-  #           .id = "conditions") %>% 
-  #   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
-  #                                                     "me_cfs","dysautonomia","pots"),
-  #                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-  #                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
-  # 
- 
-  
-  # adults_temp_inf_testneg <- 
-  #   map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","sle","ra","me_cfs","juvenile_arthritis","ibd",
-  #                                                    "pots","dysautonomia","me_cfs_symptoms")) %>% set_names,
-  #           cohort_wrap_func,
-  #           interval = "overall",
-  #           age_expre =  c("19 to 40","41 to 64"),
-  #           sex_expre = "Both",
-  #           numerator = "infection",
-  #           denominator = "test_negative",
-  #           .id = "conditions") %>% 
-  #   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
-  #                                                     "me_cfs","dysautonomia","pots"),
-  #                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-  #                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
-  
   elderly_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","sle","ra","me_cfs","juvenile_arthritis","ibd","pots")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "65 to 150",
             sex_expre = "Both",
             numerator = "infection",
             denominator = "test_negative",
-            .id = "conditions") %>% 
+            .id = "conditions")  %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
                                 labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
-  # children_temp_inf_testneg <- 
-  #   map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","sle","ra","me_cfs","juvenile_arthritis","ibd",
-  #                                                    "pots","dysautonomia","me_cfs_symptoms")) %>% set_names,
-  #           cohort_wrap_func,
-  #           interval = "overall",
-  #           age_expre =  c("0 to 6","7 to 11","12 to 18"),
-  #           sex_expre = "Both",
-  #           numerator = "infection",
-  #           denominator = "test_negative",
-  #           .id = "conditions") %>% 
-  #   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
-  #                                                     "me_cfs","dysautonomia","pots"),
-  #                               labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-  #                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
-  
   
   all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
                                Female = female_temp_inf_testneg,
-                              
+                               Male = male_temp_inf_testneg, 
+                               children = children_temp_inf_testneg,
+                               adult = adult_temp_inf_testneg,
                                elderly = elderly_temp_inf_testneg)
   
   
   # Specify the Excel file path
-  excel_file <- "all_IRR_inf_testneg_IPCI.xlsx"
+  excel_file <- "all_IRR_inf_testneg_CPRD_Aurum.xlsx"
   
   # Write the list of tibbles to different sheets in Excel
   write_xlsx(all_IRR_inf_testneg, excel_file)  
@@ -138,19 +139,23 @@
     plot_list$All + theme(legend.box.margin = margin(0, 0, 0, 12)))
   
   main_plot <- plot_grid(plot_list$All+ theme( legend.position = "none"), 
-                        
-                         plot_list$Female + theme( legend.position = "none"), 
-                        
                          plot_list$elderly + theme( legend.position = "none"), 
-                         nrow = 1, ncol = 3,
-                         labels = c("All",
-                                    "Female",  
-                                    "Elderly"), label_size = 8, label_y = 1.0,
+                         plot_list$Female + theme( legend.position = "none"), 
+                         plot_list$adult + theme( legend.position = "none"),
+                         plot_list$Male + theme( legend.position = "none"), 
+                       
+                         plot_list$children + theme( legend.position = "none"), 
+                         
+                         
+                         nrow = 3, ncol = 2,
+                         labels = c("All", "Elderly",  
+                                    "Female", "Adults",  
+                                    "Male","Children"), label_size = 8, label_y = 1.0,
                          align = "w")
   
 
-pdf("supp_ipci.pdf",         # File name
-    width = 9, height = 3, # Width and height in inches
+pdf("supp_cprd_aurum.pdf",         # File name
+    width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
 

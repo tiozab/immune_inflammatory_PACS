@@ -1,13 +1,18 @@
+#pharmetrics and UiO does not have test negative information (take it out)
+# specific populations
+incidence_estimates_help <- rbind(CPRDGOLD[[2]],
+                                 IMASIS[[2]],
+                                  AUSOM[[2]],
+                                  IPCI[[2]],
+                                  eDOL_CHUM[[2]],
+                                  CORIVA[[2]],
+                                  CPRDAurum[[2]])
 
-source(here::here("R","getData.R"))
-source(here::here("R","IRR function.R"))
-
-#pharmetrics does not have test negative information (take it out)
 
 ## infection over test_negative ------------------------------------------------------
 
 overall_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("mis","sle","juvenile_arthritis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "0 to 150",
@@ -21,7 +26,7 @@ overall_temp_inf_testneg <-
                                                   "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 female_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "0 to 150",
@@ -36,7 +41,7 @@ female_temp_inf_testneg <-
 
 
 male_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","sle")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "0 to 150",
@@ -50,8 +55,9 @@ male_temp_inf_testneg <-
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
+## have to take out RA and SLE because of low count
 children_temp_inf_testneg <-
-  map_df( setdiff( names_conditions$cohort_name, c("ra","juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","sle","ra")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  c("0 to 6","7 to 11","12 to 18"),
@@ -66,7 +72,7 @@ children_temp_inf_testneg <-
 
 
 adult_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  c("19 to 40","41 to 64"),
@@ -81,7 +87,7 @@ adult_temp_inf_testneg <-
 
 
 elderly_temp_inf_testneg <- 
-  map_df( setdiff( names_conditions$cohort_name, c("t1dm","me_cfs","juvenile_arthritis","sle","mis")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","sle")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  "65 to 150",
@@ -101,7 +107,11 @@ all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg,
                              adult = adult_temp_inf_testneg,
                              elderly = elderly_temp_inf_testneg)
 
+# Specify the Excel file path
+excel_file <- "all_IRR_inf_testneg_ALL.xlsx"
 
+# Write the list of tibbles to different sheets in Excel
+write_xlsx(all_IRR_inf_testneg, excel_file)
 
 plot_func <- function( df){
   
@@ -109,7 +119,7 @@ plot_func <- function( df){
     geom_point( size = 1.2, position = position_dodge(0.2)) +
     geom_errorbar( aes( xmin = IRR_low_random, xmax = IRR_upper_random), position = position_dodge(0.75), width = 0.3) +
     geom_vline( xintercept = 1) +
-    scale_x_continuous(  limits = c(0.2, 5), trans = scales::log2_trans()) +
+    scale_x_continuous(  limits = c(0.3, 4), trans = scales::log2_trans()) +
     guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
     ggsci::scale_color_lancet( alpha = 0.5) +
     labs( x = "", y = "", fill = "IRR") +
@@ -155,163 +165,32 @@ plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
 # Closing the graphical device
 dev.off() 
  
+#AUSOM does not have reinfection (take it out)
+# specific populations
+incidence_estimates_help <- rbind(CPRDGOLD[[2]],
+                                  IMASIS[[2]],
+                                  Pharmetrics[[2]],
+                                  IPCI[[2]],
+                                  eDOL_CHUM[[2]],
+                                  CORIVA[[2]],
+                                  CPRDAurum[[2]],
+                                  University_of_Oslo[[2]])
 
+# 
+# 
+# # re-infection over infection ------------------------------------------------------
+# # even with AUrum not possible
+# 
+# overall_temp_inf_reinf <-
+#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","dysautonomia","sle","pots",
+#                                                    "ibd","me_cfs","me_cfs_symptoms","ra","t1dm","mis")) %>% set_names,
+#           cohort_wrap_func,
+#           interval = "overall",
+#           age_expre =  "0 to 150",
+#           sex_expre = "Both",
+#           numerator = "reinfection",
+#           denominator = "infection",
+#           .id = "conditions") %>%
+#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))
 
-## re-infection over infection ------------------------------------------------------
-### WAIT MORE DATA
-# 
-# overall_temp_inf_testneg <- 
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  "0 to 150",
-#           sex_expre = "Both",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))  
-# 
-# female_temp_inf_testneg <- 
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  "0 to 150",
-#           sex_expre = "Female",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))  
-# 
-# 
-# male_temp_inf_testneg <- 
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  "0 to 150",
-#           sex_expre = "Male",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))  
-# 
-# 
-# 
-# children_temp_inf_testneg <-
-#   map_df( setdiff( names_conditions$cohort_name, c("ra","juvenile_arthritis","sle","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  c("0 to 6","7 to 11","12 to 18"),
-#           sex_expre = "Both",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))  
-# 
-# 
-# adult_temp_inf_testneg <- 
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  c("19 to 40","41 to 64"),
-#           sex_expre = "Both",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))  
-# 
-# 
-# elderly_temp_inf_testneg <- 
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","me_cfs","sle","t1dm","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  "65 to 150",
-#           sex_expre = "Both",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>% 
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE),
-#         outcome_cohort_name = factor(outcome_cohort_name,
-#                                      levels = c("POTS symptoms",
-#                                                 "me_cfs_symptoms",
-#                                                 "POTS diagnosis", 
-#                                                 "me_cfs",
-#                                                 "ra",
-#                                                 "ibd",
-#                                                 "t1dm",
-#                                                 "sle",
-#                                                 "juvenile_arthritis",
-#                                                 "mis"),
-#                                      labels = c("POTS symptoms",
-#                                                 "ME/CFS symptoms",
-#                                                 "POTS diagnosis",
-#                                                 "ME/CFS",
-#                                                 "RA",
-#                                                 "IBD",
-#                                                 "T1DM",
-#                                                 "SLE",
-#                                                 "Juvenile arthritis",
-#                                                 "MIS")), 
-#         database_name = factor(database_name, 
-#                                levels = c("CPRDGOLD","PharmPlus","IMASIS","eDOL_CHUM","AUSOM","IPCI"), 
-#                                labels = c("CPRD Gold","pharMetrics Plus","IMASIS","CHUM","AUSOM","IPCI")),
-#         denominator_sex = factor(denominator_sex, levels=c("Female","Male","Both"), 
-#                                  labels = c("Female","Male","All"))
-# )
-# 
-# 
-# 
-# all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
-#                              Female = female_temp_inf_testneg,
-#                              Male = male_temp_inf_testneg, 
-#                              children = children_temp_inf_testneg,
-#                              adult = adult_temp_inf_testneg,
-#                              elderly = elderly_temp_inf_testneg)
-# 
-# 
-# 
-# plot_func <- function( df){
-#   
-#   output <- ggplot( df, aes( x = IRR_random, y = conditions)) + 
-#     geom_point( position = position_dodge(0.75)) +
-#     geom_errorbar( aes( xmin = IRR_low_random, xmax = IRR_upper_random), position = position_dodge(0.75), width = 0.5) +
-#     geom_vline( xintercept = 1) +
-#     scale_x_continuous(  limits = c(0.2, 12), trans = scales::log2_trans()) +
-#     guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
-#     ggsci::scale_color_lancet( alpha = 0.75) +
-#     labs( x = "", y = "", fill = "IRR") +
-#     theme_bw()+
-#     theme( text = element_text( family = "serif", color = "black"),
-#            axis.text.x = element_text( angle = 90, vjust = 0.5, hjust = 1),
-#            axis.text.y = element_text( ),
-#            panel.grid.minor.x = element_blank(),
-#            legend.background = element_rect(fill='transparent'),
-#            legend.position = "top")
-#   
-#   return(output)
-#   
-#   
-# }
-# 
-# 
-# plot_list <- map( all_IRR_inf_testneg, plot_func)
-# empty <- ggplot() + theme_void()
-# manual_legend <- legend <- get_legend(# create some space to the left of the legend
-#   plot_list$All + theme(legend.box.margin = margin(0, 0, 0, 12)))
-# 
-# main_plot <- plot_grid(plot_list$All+ theme( legend.position = "none"), 
-#                        empty, 
-#                        empty, 
-#                        plot_list$Female + theme( legend.position = "none"), 
-#                        plot_list$Male + theme( legend.position = "none"), 
-#                        empty, 
-#                        plot_list$children + theme( legend.position = "none"), 
-#                        plot_list$adult + theme( legend.position = "none"), 
-#                        plot_list$elderly + theme( legend.position = "none"), 
-#                        nrow = 3, ncol = 3,
-#                        labels = c("All", "", "", 
-#                                   "Female", "Male", "", 
-#                                   "Children & Adolescent", "Adults aged 19-64", "Elderly (aged >64)"), label_size = 6, label_y = 1.1,
-#                        align = "w")
-# 
-# plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1, 0.1))
-# 
+## nothing found

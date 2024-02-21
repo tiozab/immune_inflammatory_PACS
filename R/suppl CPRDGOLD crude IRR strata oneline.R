@@ -1,14 +1,4 @@
-## read in the results files
 
-source(here::here("R","read_in.R"))
-CPRDGOLD <- read_in(database_results_name = "CPRDGOLD")
-
-#load outcome names
-names_conditions <- read_csv(here::here("names_conditions.csv"))
-
-  # general population
-  incidence_estimates_general_help <- CPRDGOLD[[1]]
-  
   # specific populations
   incidence_estimates_help <- CPRDGOLD[[2]]
   
@@ -18,7 +8,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","sle","juvenile_arthritis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -91,7 +81,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   elderly_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","sle","mis","me_cfs","t1dm")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","me_cfs","juvenile_arthritis","sle","mis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "65 to 150",
@@ -111,6 +101,12 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                adult = adult_temp_inf_testneg,
                                elderly = elderly_temp_inf_testneg)
   
+  
+  # Specify the Excel file path
+  excel_file <- "all_IRR_inf_testneg_CPRDGOLD.xlsx"
+  
+  # Write the list of tibbles to different sheets in Excel
+  write_xlsx(all_IRR_inf_testneg, excel_file)  
   
   
   plot_func <- function( df){

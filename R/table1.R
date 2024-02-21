@@ -20,7 +20,7 @@ bases <- read_csv(paste0(wd,data_path, "tableOne_bases.csv")) %>%
 
 allpop <- read_csv(paste0(wd,data_path, "tableOne_allpop.csv"))
 
-if (database_results_name != "Pharmetrics") {
+if (database_results_name != "Pharmetrics" & database_results_name != "University_of_Oslo") {
 
 table_one_help <- rbind(bases,allpop ) %>%
   select("strata_level", "variable", "estimate_type", "estimate","variable_level") %>%
@@ -29,7 +29,8 @@ table_one_help <- rbind(bases,allpop ) %>%
          variable != "cohort_end_date") %>%
   mutate_at(vars(c(estimate)),as.numeric) %>%
   mutate(type = ifelse(estimate_type == "%","percentage",estimate_type),
-         estimate = ifelse(variable == "prior_history",round(estimate/365,0),estimate)) %>%
+         estimate = ifelse(variable == "prior_observation",round(estimate/365,0),
+                           ifelse(variable == "prior_history", round(estimate/365,0),estimate))) %>%
   select(-"estimate_type") %>%
   pivot_wider(names_from = type,
               values_from = estimate) %>%
@@ -48,9 +49,10 @@ table_one_help <- rbind(bases,allpop ) %>%
   mutate(Variable = ifelse(Variable == "number subjects","# patients",
                            ifelse(Variable == "number records","# records",
                                   ifelse(Variable == "age","median age (IQR) [years]",
-                                         ifelse(Variable == "prior_history","prior observation time (IQR) [years]",
-                                                ifelse(Variable == "future_observation","follow-up time (IQR) [days]",
-                                                       ifelse(Variable == "sex","Female, n (%)",Variable))))))) %>%
+                                         ifelse(Variable == "prior_observation","prior observation time (IQR) [years]",
+                                                ifelse(Variable == "prior_history","prior observation time (IQR) [years]",
+                                                       ifelse(Variable == "future_observation","follow-up time (IQR) [days]",
+                                                              ifelse(Variable == "sex","Female, n (%)",Variable)))))))) %>%
   add_row("Variable"    = glue("{database_results_name}"),
           "Entire database" = NA ,
           "Infection" = NA,
@@ -71,7 +73,8 @@ else {
            variable != "cohort_end_date") %>%
     mutate_at(vars(c(estimate)),as.numeric) %>%
     mutate(type = ifelse(estimate_type == "%","percentage",estimate_type),
-           estimate = ifelse(variable == "prior_history",round(estimate/365,0),estimate)) %>%
+           estimate = ifelse(variable == "prior_observation",round(estimate/365,0),
+                             ifelse(variable == "prior_history", round(estimate/365,0),estimate)))  %>%
     select(-"estimate_type") %>%
     pivot_wider(names_from = type,
                 values_from = estimate) %>%
@@ -89,9 +92,10 @@ else {
     mutate(Variable = ifelse(Variable == "number subjects","# patients",
                              ifelse(Variable == "number records","# records",
                                     ifelse(Variable == "age","median age (IQR) [years]",
-                                           ifelse(Variable == "prior_history","prior observation time (IQR) [years]",
+                                           ifelse(Variable == "prior_observation","prior observation time (IQR) [years]",
+                                                  ifelse(Variable == "prior_history","prior observation time (IQR) [years]",
                                                   ifelse(Variable == "future_observation","follow-up time (IQR) [days]",
-                                                         ifelse(Variable == "sex","Female, n (%)",Variable))))))) %>%
+                                                         ifelse(Variable == "sex","Female, n (%)",Variable)))))))) %>%
     add_row("Variable"    = glue("{database_results_name}"),
             "Entire database" = NA ,
             "Infection" = NA,
@@ -110,8 +114,10 @@ all_table_one <- rbind(table_one_put("CPRDGold"),
                        table_one_put("eDOL_CHUM"),
                        table_one_put("IMASIS"),
                        table_one_put("AUSOM"),
+                       table_one_put("CORIVA"),
+                       table_one_put("CPRDAurum"),
                        table_one_put("Pharmetrics"),
-                       table_one_put("CORIVA")
+                       table_one_put("University_of_Oslo")
                        )
 
 write.csv(all_table_one,here::here("plots_and_tables", "table1.csv"))

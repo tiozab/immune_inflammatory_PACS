@@ -18,7 +18,8 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("dysautonomia","ibd","juvenile_arthritis","me_cfs","me_cfs_symptoms","ra","sle","pots","t1dm","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("t1dm","dysautonomia","ibd","juvenile_arthritis",
+                                                     "me_cfs","me_cfs_symptoms","ra","sle","pots","mis")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",

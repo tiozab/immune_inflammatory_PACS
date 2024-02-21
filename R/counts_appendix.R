@@ -1,11 +1,17 @@
-## get counts for appendix
-
-source(here::here("R","getData.R"))
-source(here::here("R","IRR function.R"))
-
-
 # Specify the directory where you want to save the CSV files
 output_directory <- here::here("plots_and_tables")
+
+
+#pharmetrics and UiO does not have test negative information (take it out)
+# specific populations
+incidence_estimates_help <- rbind(CPRDGOLD[[2]],
+                                  IMASIS[[2]],
+                                  AUSOM[[2]],
+                                  IPCI[[2]],
+                                  eDOL_CHUM[[2]],
+                                  CORIVA[[2]],
+                                  CPRDAurum[[2]])
+
 
 ### FIGURE 1
 
@@ -33,7 +39,11 @@ counts_inf_testneg <- num_denom("infection","test_negative") %>%
   sex = denominator_sex) %>%
   select ( - "outcome_cohort_name") %>%
   group_by(database) %>% 
-  arrange(outcome,age,sex) %>%
+  arrange(outcome,age,sex) 
+
+write.csv(counts_inf_testneg,"fig1_meta_counts_all.csv", row.names = FALSE)
+
+counts_inf_testneg <- counts_inf_testneg %>%
   group_split()
   
 ## write every list into a csv
@@ -48,6 +58,19 @@ for (i in seq_along(counts_inf_testneg)) {
   
 }
 
+
+# general population
+incidence_estimates_general_help <- rbind(CPRDGOLD[[1]],
+                                          Pharmetrics[[1]],
+                                          IMASIS[[1]],
+                                          AUSOM[[1]],
+                                          IPCI[[1]],
+                                          eDOL_CHUM[[1]],
+                                          CORIVA[[1]],
+                                          CPRDAurum[[1]],
+                                          University_of_Oslo[[1]])
+
+
 ### FIGURE 2 (stratified)
 
 counts_health_care_pop <-  incidence_estimates_general_help %>% 
@@ -56,7 +79,7 @@ counts_health_care_pop <-  incidence_estimates_general_help %>%
           denominator_sex =="Both")  %>% 
   select("database_name", "outcome_cohort_name", "n_events","person_years"
   ) %>%
-  mutate(care_sector = ifelse(database_name %in% c("CPRDGOLD","IPCI","Pharmetrics","CORIVA"),"primary care","secondary care"),
+  mutate(care_sector = ifelse(database_name %in% c("CPRDGOLD","IPCI","Pharmetrics","CORIVA","University_of_Oslo","CPRDAurum"),"primary care","secondary care"),
          outcome = ifelse(outcome_cohort_name == "pots","POTS diagnosis", 
                           ifelse(outcome_cohort_name == "dysautonomia","POTS symptoms", 
                                  ifelse(outcome_cohort_name == "me_cfs","ME/CFS diagnosis", 
@@ -94,8 +117,9 @@ counts_pop_trend <-  incidence_estimates_general_help %>%
           denominator_age_group == "0 to 150",
           denominator_sex =="Both")  %>% 
   select("database_name", "outcome_cohort_name", "n_events","person_years","year_index"
-  ) %>%
-  mutate(outcome = ifelse(outcome_cohort_name == "pots","POTS diagnosis", 
+  )  %>%
+  mutate(care_sector = ifelse(database_name %in% c("CPRDGOLD","IPCI","Pharmetrics","CORIVA","University_of_Oslo","CPRDAurum"),"primary care","secondary care"),
+         outcome = ifelse(outcome_cohort_name == "pots","POTS diagnosis", 
                           ifelse(outcome_cohort_name == "dysautonomia","POTS symptoms", 
                                  ifelse(outcome_cohort_name == "me_cfs","ME/CFS diagnosis", 
                                         ifelse(outcome_cohort_name == "me_cfs_symptoms","ME/CFS symptoms",
@@ -108,8 +132,9 @@ counts_pop_trend <-  incidence_estimates_general_help %>%
   ) %>%
   rename(database = database_name) %>%
   select ( - "outcome_cohort_name") %>%
-  group_by(database) %>% 
+  group_by(care_sector) %>% 
   group_split()
+
 
 
 
@@ -133,8 +158,9 @@ counts_pop_age <-  incidence_estimates_general_help %>%
   filter( analysis_interval == "overall",
           denominator_sex =="Both")  %>% 
   select("database_name", "denominator_age_group","n_events","person_years","outcome_cohort_name"
-  ) %>%
-  mutate(outcome = ifelse(outcome_cohort_name == "pots","POTS diagnosis", 
+  )  %>%
+  mutate(care_sector = ifelse(database_name %in% c("CPRDGOLD","IPCI","Pharmetrics","CORIVA","University_of_Oslo","CPRDAurum"),"primary care","secondary care"),
+         outcome = ifelse(outcome_cohort_name == "pots","POTS diagnosis", 
                           ifelse(outcome_cohort_name == "dysautonomia","POTS symptoms", 
                                  ifelse(outcome_cohort_name == "me_cfs","ME/CFS diagnosis", 
                                         ifelse(outcome_cohort_name == "me_cfs_symptoms","ME/CFS symptoms",
@@ -148,7 +174,7 @@ counts_pop_age <-  incidence_estimates_general_help %>%
   rename(database = database_name,
          age = denominator_age_group) %>%
   select ( - "outcome_cohort_name") %>%
-  group_by(database) %>% 
+  group_by(care_sector) %>% 
   group_split()
 
 
@@ -185,19 +211,9 @@ counts_pop_sex <-  incidence_estimates_general_help %>%
   ) %>%
   rename(database = database_name,
          sex = denominator_sex ) %>%
-  select ( - "outcome_cohort_name") %>%
-  group_by(database) %>% 
-  group_split()
+  select ( - "outcome_cohort_name") 
 
 
-
-## write every list into a csv
-
-# Loop through each data frame in the list
-for (i in seq_along(counts_pop_sex)) {
-  # Create a unique filename for each data frame
-  filename <- paste0(output_directory, "/fig5_sex_counts_", i, ".csv")
-  
   # Write the data frame to a CSV file
-  write.csv(counts_pop_sex[[i]], file = filename, row.names = FALSE)
-}
+  write.csv(counts_pop_sex, "fig5_sex_counts.csv", row.names = FALSE)
+

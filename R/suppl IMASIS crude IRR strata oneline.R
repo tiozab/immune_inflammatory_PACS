@@ -1,14 +1,3 @@
-## read in the results files
-
-source(here::here("R","read_in.R"))
-IMASIS <- read_in(database_results_name = "IMASIS")
-
-#load outcome names
-names_conditions <- read_csv(here::here("names_conditions.csv"))
-
-  # general population
-  incidence_estimates_general_help <- IMASIS[[1]]
-  
   # specific populations
   incidence_estimates_help <- IMASIS[[2]]
   
@@ -18,7 +7,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   ## infection over test_negative ------------------------------------------------------
   
   overall_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("mis","t1dm","ibd","juvenile_arthritis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -32,7 +21,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   female_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis","me_cfs","ra")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("ra","me_cfs","mis","t1dm","ibd","juvenile_arthritis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -47,7 +36,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   male_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis","me_cfs","ra")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("ra","me_cfs","mis","t1dm","ibd","juvenile_arthritis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "0 to 150",
@@ -62,7 +51,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   adult_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis","ra")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("ra","mis","t1dm","ibd","juvenile_arthritis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  c("19 to 40","41 to 64"),
@@ -77,7 +66,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
   
   
   elderly_temp_inf_testneg <- 
-    map_df( setdiff( names_conditions$cohort_name, c("ibd","juvenile_arthritis","sle","t1dm","mis","me_cfs")) %>% set_names,
+    map_df( setdiff( names_conditions$cohort_name, c("me_cfs","mis","t1dm","ibd","juvenile_arthritis","sle")) %>% set_names,
             cohort_wrap_func,
             interval = "overall",
             age_expre =  "65 to 150",
@@ -96,6 +85,12 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
                                adult = adult_temp_inf_testneg,
                                elderly = elderly_temp_inf_testneg)
   
+  
+  # Specify the Excel file path
+  excel_file <- "all_IRR_inf_testneg_IMASIS.xlsx"
+  
+  # Write the list of tibbles to different sheets in Excel
+  write_xlsx(all_IRR_inf_testneg, excel_file)  
   
   
   plot_func <- function( df){
