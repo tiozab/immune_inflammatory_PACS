@@ -38,7 +38,9 @@ conditions_age <-
                                                         "mis", "t1dm"),
                                              labels = c("POTS symptoms","POTS diagnosis","ME/CFS symptoms","ME/CFS diagnosis",
                                                         # "RA","IBD","SLE", "JIA", 
-                                                        "MIS", "T2DM")), 
+                                                        "MIS"
+                                                        #, "T1DM"
+                                                        )), 
                 database_name = factor(database_name, 
                                        levels = c("Pharmetrics","CORIVA","University_of_Oslo","CPRDGOLD","CPRDAurum","IPCI","IMASIS","eDOL_CHUM","AUSOM"), 
                                        labels = c("P+","CORIVA","NPR","CPRD Gold","CPRD Aurum","IPCI","IMASIS","CHUM","AUSOM"))
@@ -108,7 +110,9 @@ conditions_sex <-
                                                       "pots",  "me_cfs", "t1dm"),
                                           labels = c("POTS symptoms","ME/CFS symptoms","MIS", 
                                                      # "RA","IBD","SLE", "JIA", 
-                                                     "POTS diagnosis","ME/CFS diagnosis","T2DM")), 
+                                                     "POTS diagnosis","ME/CFS diagnosis"
+                                                     #,"T1DM"
+                                                     )), 
              database_name = factor(database_name, 
                                     levels = c("Pharmetrics","CORIVA","University_of_Oslo","CPRDGOLD","CPRDAurum","IPCI","IMASIS","eDOL_CHUM","AUSOM"), 
                                     labels = c("P+","CORIVA","NPR","CPRD Gold","CPRD Aurum","IPCI","IMASIS","CHUM","AUSOM"))
