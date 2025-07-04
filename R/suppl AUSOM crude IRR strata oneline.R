@@ -29,7 +29,7 @@ names_conditions <- read_csv(here::here("names_conditions.csv"))
             .id = "conditions")  %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS","Dysautonomia","POTS"))) 
   
  ## no conditions left, do not use AUSOM

@@ -1,5 +1,5 @@
 # Specify the directory where you want to save the CSV files
-output_directory <- here::here("plots_and_tables")
+output_directory <- here::here("")
 
 
 #pharmetrics and UiO does not have test negative information (take it out)
@@ -28,7 +28,7 @@ counts_inf_testneg <- num_denom("infection","test_negative") %>%
                                                              ifelse(outcome_cohort_name == "sle","SLE",
                                                                     ifelse(outcome_cohort_name == "ibd","IBD",
                                                                            ifelse(outcome_cohort_name == "mis","MIS",
-                                                                                  ifelse(outcome_cohort_name == "t1dm","T2DM",NA))))))))))
+                                                                                  ifelse(outcome_cohort_name == "t1dm","T1DM",NA))))))))))
          ) %>%
   rename(py_exposed = person_years_infection,
   event_exposed = n_events_infection,
@@ -89,7 +89,7 @@ counts_health_care_pop <-  incidence_estimates_general_help %>%
                                                              ifelse(outcome_cohort_name == "sle","SLE",
                                                                     ifelse(outcome_cohort_name == "ibd","IBD",
                                                                            ifelse(outcome_cohort_name == "mis","MIS",
-                                                                                  ifelse(outcome_cohort_name == "t1dm","T2DM",NA))))))))))
+                                                                                  ifelse(outcome_cohort_name == "t1dm","T1DM",NA))))))))))
   ) %>%
   rename(database = database_name) %>%
   select ( - "outcome_cohort_name") %>%
@@ -128,7 +128,7 @@ counts_pop_trend <-  incidence_estimates_general_help %>%
                                                              ifelse(outcome_cohort_name == "sle","SLE",
                                                                     ifelse(outcome_cohort_name == "ibd","IBD",
                                                                            ifelse(outcome_cohort_name == "mis","MIS",
-                                                                                  ifelse(outcome_cohort_name == "t1dm","T2DM",NA))))))))))
+                                                                                  ifelse(outcome_cohort_name == "t1dm","T1DM",NA))))))))))
   ) %>%
   rename(database = database_name) %>%
   select ( - "outcome_cohort_name") %>%
@@ -169,7 +169,7 @@ counts_pop_age <-  incidence_estimates_general_help %>%
                                                              ifelse(outcome_cohort_name == "sle","SLE",
                                                                     ifelse(outcome_cohort_name == "ibd","IBD",
                                                                            ifelse(outcome_cohort_name == "mis","MIS",
-                                                                                  ifelse(outcome_cohort_name == "t1dm","T2DM",NA))))))))))
+                                                                                  ifelse(outcome_cohort_name == "t1dm","T1DM",NA))))))))))
   ) %>%
   rename(database = database_name,
          age = denominator_age_group) %>%
@@ -207,7 +207,7 @@ counts_pop_sex <-  incidence_estimates_general_help %>%
                                                              ifelse(outcome_cohort_name == "sle","SLE",
                                                                     ifelse(outcome_cohort_name == "ibd","IBD",
                                                                            ifelse(outcome_cohort_name == "mis","MIS",
-                                                                                  ifelse(outcome_cohort_name == "t1dm","T2DM",NA))))))))))
+                                                                                  ifelse(outcome_cohort_name == "t1dm","T1DM",NA))))))))))
   ) %>%
   rename(database = database_name,
          sex = denominator_sex ) %>%

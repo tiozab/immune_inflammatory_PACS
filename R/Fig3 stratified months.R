@@ -15,16 +15,16 @@ incidence_estimates_general_help <- rbind(CPRDGOLD[[1]],
 
 #Figure 3_stratified
 
-conditions_year  <-
+conditions_month  <-
   incidence_estimates_general_help %>%
-  filter( analysis_interval == "years",
+  filter( analysis_interval == "months",
           denominator_age_group == "0 to 150",
           denominator_sex =="Both",
           n_events > 4 ,
           outcome_cohort_name %in% c("dysautonomia", "me_cfs_symptoms","pots",
                                      "me_cfs","mis"
                                      #, "t1dm"
-          )
+                                     )
   ) %>%
   group_by( database_name, outcome_cohort_name) %>%
   mutate( number_point = n()) %>%
@@ -53,20 +53,20 @@ conditions_year  <-
 
 
 # Specify the Excel file path
-excel_file <- "conditions_year_fig3.xlsx"
+excel_file <- "conditions_month_fig3.xlsx"
 
 # Write the list of tibbles to different sheets in Excel
-write_xlsx(conditions_year, excel_file)  
+write_xlsx(conditions_month, excel_file)  
 
-pdf("figure3_stratified.pdf",         # File name
-    width = 5, height = 6, # Width and height in inches
+pdf("figure3_stratified_months.pdf",         # File name
+    width = 11, height = 7, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "srgb")   # Color model
 
 
-ggplot(conditions_year, aes( x = factor(year_index), y = incidence_100000_pys, group = database_name, color = database_name)) +
+ggplot(conditions_month, aes( x = factor(year_month), y = incidence_100000_pys, group = database_name, color = database_name)) +
   geom_smooth( method = "lm",
-               formula = y ~ poly(x, 1),
+               formula = y ~ poly(x, 3),
                se = FALSE) +
   geom_point(size = 0.5) +
   geom_errorbar(aes(ymin = incidence_100000_pys_95CI_lower, ymax =  incidence_100000_pys_95CI_upper), width=0.2) +
@@ -78,7 +78,7 @@ ggplot(conditions_year, aes( x = factor(year_index), y = incidence_100000_pys, g
   facet_grid(outcome_cohort_name ~ care_sector, scales = "free_y", space = "free_y", switch = "y") +
   theme_classic()+
   theme( text = element_text( family = "serif", color = "black"),
-         axis.text.x = element_text( angle = 0, size = 7, vjust = 0.5),
+         axis.text.x = element_text( angle = 90, size = 7, vjust = 0.5),
          axis.text.y = element_text( size = 8),
          panel.grid.major = element_blank(),
          panel.grid.minor.x = element_blank(),

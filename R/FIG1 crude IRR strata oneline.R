@@ -22,7 +22,7 @@ overall_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                                       labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                       labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                                   "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 female_temp_inf_testneg <- 
@@ -36,7 +36,7 @@ female_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
@@ -51,7 +51,7 @@ male_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
@@ -67,7 +67,7 @@ children_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
@@ -82,7 +82,7 @@ adult_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 
@@ -97,7 +97,7 @@ elderly_temp_inf_testneg <-
           .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                          "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
@@ -165,32 +165,4 @@ plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
 # Closing the graphical device
 dev.off() 
  
-#AUSOM does not have reinfection (take it out)
-# specific populations
-incidence_estimates_help <- rbind(CPRDGOLD[[2]],
-                                  IMASIS[[2]],
-                                  Pharmetrics[[2]],
-                                  IPCI[[2]],
-                                  eDOL_CHUM[[2]],
-                                  CORIVA[[2]],
-                                  CPRDAurum[[2]],
-                                  University_of_Oslo[[2]])
 
-# 
-# 
-# # re-infection over infection ------------------------------------------------------
-# # even with AUrum not possible
-# 
-# overall_temp_inf_reinf <-
-#   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","dysautonomia","sle","pots",
-#                                                    "ibd","me_cfs","me_cfs_symptoms","ra","t1dm","mis")) %>% set_names,
-#           cohort_wrap_func,
-#           interval = "overall",
-#           age_expre =  "0 to 150",
-#           sex_expre = "Both",
-#           numerator = "reinfection",
-#           denominator = "infection",
-#           .id = "conditions") %>%
-#   mutate( conditions = fct_reorder(conditions, IRR_random, .desc = FALSE))
-
-## nothing found

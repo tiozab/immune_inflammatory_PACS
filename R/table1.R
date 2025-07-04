@@ -120,4 +120,4 @@ all_table_one <- rbind(table_one_put("CPRDGold"),
                        table_one_put("University_of_Oslo")
                        )
 
-write.csv(all_table_one,here::here("plots_and_tables", "table1.csv"))
+write.csv(all_table_one,here::here("table1.csv"))

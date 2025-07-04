@@ -17,7 +17,7 @@
             .id = "conditions")  %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   female_temp_inf_testneg <- 
@@ -31,7 +31,7 @@
             .id = "conditions")%>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
@@ -46,7 +46,7 @@
             .id = "conditions") %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
@@ -61,7 +61,7 @@
             .id = "conditions") %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   
@@ -76,7 +76,7 @@
             .id = "conditions") %>% 
     mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                       "me_cfs","dysautonomia","pots"),
-                                labels = c("T2DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
                                            "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
   
   all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg, 
