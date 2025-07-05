@@ -29,7 +29,8 @@ cohort_wrap_func <- function(conditions,
                              age_expre = "0 to 150", 
                              sex_expre = "Both",
                              numerator = numerator,
-                             denominator = denominator){
+                             denominator = denominator,
+                             method_ci = "classic"){
   
   
   IRR_df_1 <- 
@@ -39,35 +40,37 @@ cohort_wrap_func <- function(conditions,
             denominator_sex %in% sex_expre
     ) %>% 
     filter( !is.na(incidence_100000_pys_infection), !is.na(incidence_100000_pys_test_negative)) %>% 
-    filter( outcome_cohort_name == conditions) %>%
+    filter( outcome_cohort_name %in% conditions) %>%
+    dplyr::group_by(database_name) %>%
     summarise(n_events_infection = sum(n_events_infection),
               person_years_infection = sum(person_years_infection),
               n_events_test_negative = sum(n_events_test_negative),
               person_years_test_negative = sum(person_years_test_negative))
   
-  IRR_df_2 <- 
-    num_denom(numerator,denominator) %>% 
-    filter( analysis_interval %in% interval, 
-            denominator_age_group %in% age_expre,
-            denominator_sex %in% sex_expre
-    ) %>% 
-    filter( !is.na(incidence_100000_pys_infection), !is.na(incidence_100000_pys_test_negative)) %>% 
-    filter( outcome_cohort_name == conditions) %>%
-    select(database_name) %>% distinct()
-  
-  IRR_df <- cbind(IRR_df_1,IRR_df_2)
-  
-  
+  # IRR_df_2 <- 
+  #   num_denom(numerator,denominator) %>% 
+  #   filter( analysis_interval %in% interval, 
+  #           denominator_age_group %in% age_expre,
+  #           denominator_sex %in% sex_expre
+  #   ) %>% 
+  #   filter( !is.na(incidence_100000_pys_infection), !is.na(incidence_100000_pys_test_negative)) %>% 
+  #   filter( outcome_cohort_name == conditions) %>%
+  #   select(database_name) %>% distinct()
+  # 
+  # IRR_df <- cbind(IRR_df_1,IRR_df_2)
   
   
-  meta_unit_func <- function( input_df = IRR_df){
+  
+  
+  meta_unit_func <- function( input_df = IRR_df_1, method_ci = method_ci){
     
     output_meta <- meta::metainc( event.e = n_events_infection,
                                   time.e = person_years_infection,
                                   event.c = n_events_test_negative,
                                   time.c = person_years_test_negative, 
                                   sm = "IRR",
-                                  data = input_df)
+                                  data = input_df,
+                                  method.random.ci = method_ci)
     
     output_meta <- 
       tibble( IRR_random = exp(output_meta$TE.random),
@@ -81,7 +84,7 @@ cohort_wrap_func <- function(conditions,
     
   }  
   
-  output <- meta_unit_func( input_df = IRR_df)
+  output <- meta_unit_func( input_df = IRR_df_1, method_ci = method_ci)
   
   return(output)
   
