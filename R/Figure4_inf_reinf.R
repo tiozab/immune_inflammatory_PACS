@@ -15,7 +15,7 @@ incidence_estimates_help <- rbind(CPRDGOLD[[2]],
 # re-infection over infection ------------------------------------------------------
 
 overall_temp_reinf_inf <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","ibd","ra","sle","t1dm")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","ibd","sle","t1dm")) %>% set_names,
           cohort_wrap_func_reinf,
           interval = "overall",
           age_expre =  "0 to 150",
