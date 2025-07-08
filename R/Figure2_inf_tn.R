@@ -58,7 +58,7 @@ male_temp_inf_testneg <-
 
 ## have to take out RA and SLE because of low count
 children_temp_inf_testneg <-
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","sle","ra")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","ra","sle")) %>% set_names,
           cohort_wrap_func,
           interval = "overall",
           age_expre =  c("0 to 6","7 to 11","12 to 18"),
@@ -166,4 +166,29 @@ plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
 # Closing the graphical device
 dev.off() 
  
+
+# To get I2 plot for overall inf vs test negative
+
+mean_I2 <- mean(overall_temp_inf_testneg$I2, na.rm = TRUE)*100
+
+ggplot(overall_temp_inf_testneg, aes(x = I2*100, y = conditions)) +
+  geom_point(size = 2, color = "#e41a1c") +
+  geom_errorbarh(aes(xmin = I2_lower*100, xmax = I2_upper*100), height = 0.3, color = "#e41a1c") +
+  geom_vline(xintercept = mean_I2, linetype = "dashed", color = "blue", linewidth = 1) +
+  scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, 20)) +
+  labs(
+    x = "I² (%)",
+    y = "",
+    title = "Heterogeneity (I²) across databases by condition"
+  ) +
+  annotate("text", x = mean_I2 + 5, y = Inf, label = paste0("Avg I² = ", round(mean_I2, 1), "%"), 
+           hjust = 0, vjust = 2, color = "blue", size = 3.5) +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  )
+
+ggsave(here::here("Results_final", "Supplementary_I2.pdf"))
 
