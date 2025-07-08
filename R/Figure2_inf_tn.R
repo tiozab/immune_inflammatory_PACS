@@ -1,7 +1,8 @@
 #pharmetrics and UiO does not have test negative information (take it out)
 # specific populations
+source(here::here("R","IRR function.R"))
 incidence_estimates_help <- rbind(CPRDGOLD[[2]],
-                                  IMASIS[[2]],
+                                 IMASIS[[2]],
                                   AUSOM[[2]],
                                   IPCI[[2]],
                                   eDOL_CHUM[[2]],
@@ -19,12 +20,11 @@ overall_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+                                       labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                                  "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 female_temp_inf_testneg <- 
   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
@@ -34,8 +34,7 @@ female_temp_inf_testneg <-
           sex_expre = "Female",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -50,8 +49,7 @@ male_temp_inf_testneg <-
           sex_expre = "Male",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -67,8 +65,7 @@ children_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -83,8 +80,7 @@ adult_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -99,8 +95,7 @@ elderly_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions",
-          method_ci = "HK")  %>% 
+          .id = "conditions")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -114,7 +109,7 @@ all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg,
                              elderly = elderly_temp_inf_testneg)
 
 # Specify the Excel file path
-excel_file <- "all_IRR_inf_testneg_ALL_HK.xlsx"
+excel_file <- here::here("Results_final","all_IRR_inf_testneg_ALL.xlsx")
 
 # Write the list of tibbles to different sheets in Excel
 write_xlsx(all_IRR_inf_testneg, excel_file)
@@ -154,14 +149,14 @@ main_plot <- plot_grid(plot_list$All+ theme( legend.position = "none"),
                        plot_list$adult + theme( legend.position = "none"), 
                        plot_list$Male + theme( legend.position = "none"), 
                        plot_list$children + theme( legend.position = "none"), 
-                       
+                      
                        nrow = 3, ncol = 2,
                        labels = c("All",  "Elderly",
                                   "Female", "Adults", 
                                   "Male", "Children"), label_size = 8, label_y = 1.0,
                        align = "w")
 
-pdf("figure1_hk.pdf",         # File name
+pdf(here::here("Results_final","figure2.pdf"),         # File name
     width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
@@ -170,5 +165,5 @@ plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
 
 # Closing the graphical device
 dev.off() 
-
+ 
 

@@ -5,15 +5,21 @@
 # Transform from Long to wide format
 
 
-num_denom <- function(numerator,denominator) {
+num_denom <- function(numerator,denominator,interval, age_expre,sex_expre) {
   
   assign(glue("incidence_estimates_wide_{numerator}_{denominator}"),  
          incidence_estimates_help %>% 
            filter( 
-             denominator_strata_cohort_name %in% c(numerator, denominator)) %>% 
-           pivot_wider( id_cols = c(database_name, analysis_interval, year_index, 
-                                    denominator_age_group, denominator_sex, 
-                                    outcome_cohort_name, incidence_start_date
+             denominator_strata_cohort_name %in% c(numerator, denominator),
+             analysis_interval %in% interval, 
+             denominator_age_group %in% age_expre,
+             denominator_sex %in% sex_expre
+           ) %>% 
+           dplyr::select(-c("incidence_start_date", "analysis_interval", "year_index", "month_index", "year_month")) %>%
+           pivot_wider( id_cols = c(database_name,
+                                    outcome_cohort_name,
+                                    denominator_age_group,
+                                    denominator_sex
            ), 
            names_from = denominator_strata_cohort_name,
            values_from = c( n_persons, person_years, n_events, incidence_100000_pys)) %>% 
@@ -32,13 +38,8 @@ cohort_wrap_func <- function(conditions,
                              denominator = denominator,
                              method_ci = "classic"){
   
-  
   IRR_df_1 <- 
-    num_denom(numerator,denominator) %>% 
-    filter( analysis_interval %in% interval, 
-            denominator_age_group %in% age_expre,
-            denominator_sex %in% sex_expre
-    ) %>% 
+    num_denom(numerator,denominator,interval,age_expre,sex_expre) %>% 
     filter( !is.na(incidence_100000_pys_infection), !is.na(incidence_100000_pys_test_negative)) %>% 
     filter( outcome_cohort_name %in% conditions) %>%
     dplyr::group_by(database_name) %>%

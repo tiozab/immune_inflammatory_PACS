@@ -1,7 +1,8 @@
 #pharmetrics and UiO does not have test negative information (take it out)
 # specific populations
+source(here::here("R","IRR function.R"))
 incidence_estimates_help <- rbind(CPRDGOLD[[2]],
-                                 IMASIS[[2]],
+                                  IMASIS[[2]],
                                   AUSOM[[2]],
                                   IPCI[[2]],
                                   eDOL_CHUM[[2]],
@@ -19,11 +20,12 @@ overall_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
-                                       labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
-                                                  "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
+                              labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
+                                         "ME/CFS diagnosis","POTS symptoms","POTS diagnosis"))) 
 
 female_temp_inf_testneg <- 
   map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis")) %>% set_names,
@@ -33,7 +35,8 @@ female_temp_inf_testneg <-
           sex_expre = "Female",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -48,7 +51,8 @@ male_temp_inf_testneg <-
           sex_expre = "Male",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -64,7 +68,8 @@ children_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -79,7 +84,8 @@ adult_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -94,7 +100,8 @@ elderly_temp_inf_testneg <-
           sex_expre = "Both",
           numerator = "infection",
           denominator = "test_negative",
-          .id = "conditions")  %>% 
+          .id = "conditions",
+          method_ci = "HK")  %>% 
   mutate( conditions = factor(conditions,levels = c("t1dm","mis","ibd","sle","juvenile_arthritis","ra","me_cfs_symptoms",
                                                     "me_cfs","dysautonomia","pots"),
                               labels = c("T1DM","MIS","IBD","SLE","Juvenile arthritis","RA","ME/CFS symptoms",
@@ -108,18 +115,18 @@ all_IRR_inf_testneg <- list( All = overall_temp_inf_testneg,
                              elderly = elderly_temp_inf_testneg)
 
 # Specify the Excel file path
-excel_file <- "all_IRR_inf_testneg_ALL.xlsx"
+excel_file <- here::here("Results_final","all_IRR_inf_testneg_ALL_HK.xlsx")
 
 # Write the list of tibbles to different sheets in Excel
 write_xlsx(all_IRR_inf_testneg, excel_file)
 
-plot_func <- function( df){
+plot_func <- function(df, xlim){
   
   output <- ggplot( df, aes( x = IRR_random, y = conditions)) + 
     geom_point( size = 1.2, position = position_dodge(0.2)) +
     geom_errorbar( aes( xmin = IRR_low_random, xmax = IRR_upper_random), position = position_dodge(0.75), width = 0.3) +
     geom_vline( xintercept = 1) +
-    scale_x_continuous(  limits = c(0.3, 4), trans = scales::log2_trans()) +
+    scale_x_continuous(  limits = xlim, trans = scales::log2_trans(), labels = scales::label_number(accuracy = 0.01, trim = TRUE)) +
     guides(color = guide_legend(nrow = 1, byrow = TRUE)) +
     ggsci::scale_color_lancet( alpha = 0.5) +
     labs( x = "", y = "", fill = "IRR") +
@@ -136,8 +143,18 @@ plot_func <- function( df){
   
 }
 
+x_axis_limits_list <- list(
+  All = c(0.3, 4),
+  elderly = c(0.1, 8),
+  Female = c(0.05, 8),
+  adult = c(0.1, 5),
+  Male = c(0.01, 50),
+  children = c(0.01, 85)
+)
 
-plot_list <- map( all_IRR_inf_testneg, plot_func)
+plot_list <- imap(all_IRR_inf_testneg, ~ plot_func(.x, x_axis_limits_list[[.y]]))
+
+#plot_list <- map(all_IRR_inf_testneg, plot_func)
 empty <- ggplot() + theme_void()
 manual_legend <- legend <- get_legend(# create some space to the left of the legend
   plot_list$All + theme(legend.box.margin = margin(0, 0, 0, 12)))
@@ -148,14 +165,14 @@ main_plot <- plot_grid(plot_list$All+ theme( legend.position = "none"),
                        plot_list$adult + theme( legend.position = "none"), 
                        plot_list$Male + theme( legend.position = "none"), 
                        plot_list$children + theme( legend.position = "none"), 
-                      
+                       
                        nrow = 3, ncol = 2,
                        labels = c("All",  "Elderly",
                                   "Female", "Adults", 
                                   "Male", "Children"), label_size = 8, label_y = 1.0,
                        align = "w")
 
-pdf("figure1.pdf",         # File name
+pdf(here::here("Results_final","figure2_hk.pdf"),         # File name
     width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
@@ -164,5 +181,3 @@ plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
 
 # Closing the graphical device
 dev.off() 
- 
-

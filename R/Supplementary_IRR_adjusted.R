@@ -13,12 +13,14 @@ library(ggsci)
 
 infection_df <- incidence_estimates_help %>%
   filter(denominator_strata_cohort_name == "infection") %>%
+  filter(!(is.na(incidence_100000_pys))) %>% 
   select(database_name, denominator_age_group, denominator_sex,
          outcome_cohort_name, n_events, person_years) %>%
   mutate(group = "infection")
 
 testneg_df <- incidence_estimates_help %>%
   filter(denominator_strata_cohort_name == "test_negative") %>%
+  filter(!(is.na(incidence_100000_pys))) %>% 
   select(database_name, denominator_age_group, denominator_sex,
          outcome_cohort_name, n_events, person_years) %>%
   mutate(group = "test_negative")
@@ -31,7 +33,7 @@ poisson_df <- bind_rows(infection_df, testneg_df) %>%
   )
 
 databases_list <- unique(poisson_df$database_name)
-outcomes_list <- unique(poisson_df$outcome_cohort_name)
+outcomes_list <- poisson_df %>% dplyr::filter(!(outcome_cohort_name %in% c("mis", "juvenile_arthritis"))) %>% dplyr::pull(outcome_cohort_name) %>% unique()
 
 # ---- Function to compute adjusted log IRR per database ----
 
@@ -126,12 +128,12 @@ sex_adj_IRRs <- sex_adj_IRRs %>%
 
 # ---- Plot function ----
 
-plot_adjusted <- function(df, title_text) {
+plot_adjusted <- function(df, title_text, xlimits) {
   ggplot(df, aes(x = IRR_adj, y = conditions)) + 
     geom_point(size = 1.5) +
     geom_errorbar(aes(xmin = IRR_low_adj, xmax = IRR_high_adj), width = 0.3) +
     geom_vline(xintercept = 1, linetype = "dashed") +
-    scale_x_continuous(limits = c(0.3, 4), trans = scales::log2_trans()) +
+    scale_x_continuous(limits = xlimits, trans = scales::log2_trans(), labels = scales::label_number(accuracy = 0.1)) +
     ggsci::scale_color_lancet(alpha = 0.7) +
     labs(x = "IRR", y = "", title = title_text) +
     theme_bw() +
@@ -146,9 +148,9 @@ plot_adjusted <- function(df, title_text) {
 
 # ---- Create plots ----
 
-plot_crude <- plot_adjusted(crude_IRRs, "Crude IRR (meta-analysis)")
-plot_age   <- plot_adjusted(age_adj_IRRs, "Age-adjusted IRR (meta-analysis)")
-plot_sex   <- plot_adjusted(sex_adj_IRRs, "Sex-adjusted IRR (meta-analysis)")
+plot_crude <- plot_adjusted(crude_IRRs, "Crude IRR (meta-analysis)", c(0.1,4))
+plot_age   <- plot_adjusted(age_adj_IRRs, "Age-adjusted IRR (meta-analysis)", c(0.1,4))
+plot_sex   <- plot_adjusted(sex_adj_IRRs, "Sex-adjusted IRR (meta-analysis)", c(0.1,4))
 plot_meta  <- plot_list$All + labs(title = "Stratified meta IRR (original)") + theme(plot.title = element_text(hjust = 0.5, size = 11))
 
 # ---- Combine plots ----
