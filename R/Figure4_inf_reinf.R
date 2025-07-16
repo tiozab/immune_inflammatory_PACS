@@ -1,5 +1,6 @@
 #AUSOM does not have reinfection (take it out), UiO has (put it in)
 # specific populations
+source(here::here("R","IRR function_reinf.R"))
 incidence_estimates_help <- rbind(CPRDGOLD[[2]],
                                   IMASIS[[2]],
                                   Pharmetrics[[2]],
@@ -14,7 +15,7 @@ incidence_estimates_help <- rbind(CPRDGOLD[[2]],
 # re-infection over infection ------------------------------------------------------
 
 overall_temp_reinf_inf <- 
-  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","ibd","ra","sle","t1dm")) %>% set_names,
+  map_df( setdiff( names_conditions$cohort_name, c("juvenile_arthritis","mis","ibd","sle","t1dm")) %>% set_names,
           cohort_wrap_func_reinf,
           interval = "overall",
           age_expre =  "0 to 150",
@@ -33,7 +34,7 @@ overall_temp_reinf_inf <-
 all_IRR_reinf_inf <- list( All = overall_temp_reinf_inf)
 
 # Specify the Excel file path
-excel_file <- "all_IRR_reinf_inf_ALL.xlsx"
+excel_file <- here::here("Results_final","all_IRR_reinf_inf_ALL.xlsx")
 
 # Write the list of tibbles to different sheets in Excel
 write_xlsx(all_IRR_reinf_inf, excel_file)
@@ -73,7 +74,7 @@ main_plot <- plot_grid(plot_list$All+ theme( legend.position = "none"),
                        labels = c("All"), label_size = 8, label_y = 1.0,
                        align = "w")
 
-pdf("figure_reinf_inf.pdf",         # File name
+pdf(here::here("Results_final","figure4.pdf"),         # File name
     width = 6, height = 6, # Width and height in inches
     bg = "white",          # Background color
     colormodel = "cmyk")    # Color model (cmyk is required for most publications)
