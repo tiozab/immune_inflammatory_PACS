@@ -8,13 +8,18 @@ incidence_estimates_help <- rbind(CPRDGOLD[[2]],
                                   CORIVA[[2]],
                                   CPRDAurum[[2]])
 
+## exclude all MIS as well ## TB
+incidence_estimates_help <- incidence_estimates_help %>%
+  filter(outcome_cohort_name != "mis",
+         outcome_cohort_name != "juvenile_arthritis")
+
 # Assign variant periods
 assign_variant <- function(date) {
   case_when(
     date >= as.Date("2020-12-01") & date < as.Date("2021-06-30") ~ "Alpha",
     date >= as.Date("2021-06-30") & date < as.Date("2021-12-15") ~ "Delta",
     date >= as.Date("2021-12-15") & date < as.Date("2022-03-31") ~ "Omicron BA.1",
-    date >= as.Date("2022-04-01")                               ~ "Omicron BA.2+",
+    date >= as.Date("2022-04-01")                                ~ "Omicron BA.2+",
     TRUE ~ "Other"
   )
 }
@@ -46,8 +51,8 @@ compute_variant_IRR <- function(df, condition_name) {
       person_years_test_negative = sum(person_years_test_negative, na.rm = TRUE),
       .groups = "drop"
     ) %>%
-    mutate(condition = condition_name)
-}
+    mutate(condition = condition_name) 
+  }
 
 # Get unique conditions
 conditions <- unique(monthly_wide_df$outcome_cohort_name)
@@ -97,14 +102,18 @@ for (cond in all_conditions) {
 }
 
 # Combine all results
-meta_summary_df <- bind_rows(meta_list)
+meta_summary_df <- bind_rows(meta_list) %>% 
+  mutate( condition = factor(condition,levels = c("pots","dysautonomia","me_cfs","me_cfs_symptoms","ra","ibd","t1dm","sle"
+                                                    ),
+                              labels = c("POTS diagnosis","POTS symptoms","ME/CFS diagnosis","ME/CFS symptoms","RA","IBD","T1DM","SLE"
+                                         ))) 
 
 # Order variant factor if you want them nicely in plots
 meta_summary_df <- meta_summary_df %>%
   mutate(variant = factor(variant, levels = c("Alpha", "Delta", "Omicron BA.1", "Omicron BA.2+", "Other")))
 
 # Plot
-ggplot(meta_summary_df, aes(x = variant, y = IRR_random)) +
+main_plot <- ggplot(meta_summary_df, aes(x = variant, y = IRR_random)) +
   geom_point(size = 3) +
   geom_errorbar(aes(ymin = IRR_low, ymax = IRR_high), width = 0.2) +
   geom_hline(yintercept = 1, linetype = "dashed", color = "gray50") +
@@ -112,10 +121,9 @@ ggplot(meta_summary_df, aes(x = variant, y = IRR_random)) +
   theme_bw(base_size = 14) +
   labs(
     x = "Variant period",
-    y = "IRR (Infection vs Test Negative)",
-    title = "IRRs by COVID-19 variant period and condition"
+    y = ""
   )   +
-  scale_y_log10(labels = label_number(accuracy = 0.001)) +
+  scale_y_log10(labels = label_number(accuracy = 0.1)) +
   theme( text = element_text( family = "serif", color = "black"),
          axis.text.x = element_text( size = 10, angle = 90, vjust = 0.5, hjust = 1),
          axis.text.y = element_text( size=10),
@@ -123,7 +131,15 @@ ggplot(meta_summary_df, aes(x = variant, y = IRR_random)) +
          legend.background = element_rect(fill='transparent'),
          legend.position = "top")
 
-ggsave(here::here("Results_final","Figure3_variant_free.pdf"))
+pdf("plot3_variant_free.pdf",         # File name
+    width = 6, height = 9, # Width and height in inches
+    bg = "white",          # Background color
+    colormodel = "cmyk")    # Color model (cmyk is required for most publications)
+
+plot_grid( main_plot, manual_legend, ncol = 1, rel_heights = c(1.5, 0.1))
+
+# Closing the graphical device
+dev.off() 
 
 # Plot
 ggplot(meta_summary_df, aes(x = variant, y = IRR_random)) +
